@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "start": "node backend/server",
-    "server": "nodemon backend/server"
+    "server": "nodemon backend/server",
+    "data:import": "node backend/seeder",
+    "data:destroy": "node backend/seeder -d"
   },
   "repository": {
     "type": "git",
@@ -19,8 +21,10 @@
   },
   "homepage": "https://github.com/manali2909/Proshop#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "dotenv": "^16.0.0",
-    "express": "^4.17.3"
+    "express": "^4.17.3",
+    "mongoose": "^6.2.8"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"
