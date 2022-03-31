@@ -3,7 +3,11 @@ import { notFound , errorHandler } from './middleware/errorHandler.js';
 import connectDB from './config/db.js';
 import dotenv from 'dotenv';
 import productRoutes from './routes/productRoutes.js'
+import userRoutes from './routes/userRoutes.js'
 const app = express();
+
+//body parser
+app.use(express.json());
 
 dotenv.config();
 
@@ -12,6 +16,7 @@ connectDB();
 app.get('/',(req,res)=>{res.send('API is runnig');} )
 
 app.use('/api/products', productRoutes);
+app.use('/api/users', userRoutes);
 app.use (notFound);
 app.use(errorHandler);
 
