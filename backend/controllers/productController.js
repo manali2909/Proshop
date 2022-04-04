@@ -16,4 +16,19 @@ const getProductById = asyncHandler(async (req, res)=>{
     }
 })
 
-export  {getProducts ,getProductById}
+const deleteProduct = asyncHandler(async (req, res)=>{
+    let product = await Products.findById(req.params.id)
+    if(product) {   
+           await product.remove();
+           res.json({message:'Product Removed'});
+    }else {
+        res.status(404)
+        throw new Error('Product not found');
+    }
+})
+
+export  {
+    getProducts ,
+    getProductById,
+    deleteProduct,
+}
