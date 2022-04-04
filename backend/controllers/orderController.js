@@ -1,6 +1,7 @@
 import orders from '../models/orderModel.js';
 import asyncHandler from 'express-async-handler';
 import Order from '../models/orderModel.js';
+import mongoose from 'mongoose';
 
 const addOrderItems = asyncHandler(async (req, res)=>{
    const {
@@ -45,7 +46,37 @@ const getOrderById = asyncHandler(async (req, res)=>{
         throw new Error('Order not found');
     }
  })
+//update order to pain
+//:id/pay
+ const updateOrderToPay = asyncHandler(async (req, res)=>{
+    const order = await Order.findById(req.params.id);
+
+    if(order){
+        order.isPaid=true;
+        order.paidAt= Date.now();
+        order.paymentResult={
+            id:req.body.id,
+            status:req.body.status,
+            update_time:req.body.update_time,
+            email_address:req.body.payer.email_address
+        }
+        const updateOrder= await order.save();
+        res.json(updateOrder);
+    }
+    else {
+        res.status(404);
+        throw new Error('Order not found');
+    }
+ })
+ //get ourder by user
+ // orders/myorders
+ const getMyOrders = asyncHandler(async (req, res)=>{
+    
+    const orders = await Order.find({user:req.user._id});
+    res.json(orders);
+   
+})
  
 
  
-export  {addOrderItems , getOrderById}
+export  {addOrderItems , getOrderById , updateOrderToPay, getMyOrders}
