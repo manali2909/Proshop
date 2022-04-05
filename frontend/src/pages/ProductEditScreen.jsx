@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from "react";
-import {
-  Link,
-  useNavigate,
-  useSearchParams,
-  useParams,
-} from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
 import { Form, Row, Col, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
@@ -22,6 +18,7 @@ const ProductEditScreen = () => {
   const [brand, setBrand] = useState("");
   const [countInStock, setCountInStock] = useState(0);
   const [description, setDescription] = useState("");
+  const [uploading, setUploading] = useState(false);
 
   //disptching to state
   const dispatch = useDispatch();
@@ -71,6 +68,31 @@ const ProductEditScreen = () => {
       })
     );
   };
+
+  const uploadFileHandler = async (e) => {
+    const file = e.target.files[0];
+    console.log(file);
+    const formData = new FormData();
+    formData.append("image", file);
+    setUploading(true);
+
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      };
+      const { data } = await axios.post("/api/upload", formData, config);
+
+      setImage(data);
+      console.log(data);
+      setUploading(false);
+    } catch (error) {
+      console.error(error);
+      setUploading(false);
+    }
+  };
+
   return (
     <>
       <Link to='/admin/productlist' className='btn btn-light my-3'>
@@ -113,6 +135,14 @@ const ProductEditScreen = () => {
                 placeholder='Enter image URL'
                 value={image}
                 onChange={(e) => setImage(e.target.value)}></Form.Control>
+              <Form.Control
+                type='file'
+                // id='image-file'
+                label='Choose file'
+                custom='true'
+                onChange={uploadFileHandler}
+              />
+              {uploading && <Loader />}
             </Form.Group>
 
             <Form.Group controlId='brand'>
