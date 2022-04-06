@@ -3,6 +3,7 @@ import path from 'path';
 import { notFound , errorHandler } from './middleware/errorHandler.js';
 import connectDB from './config/db.js';
 import dotenv from 'dotenv';
+import morgan from 'morgan';
 import productRoutes from './routes/productRoutes.js'
 import userRoutes from './routes/userRoutes.js'
 import orderRoutes from './routes/orderRoutes.js'
@@ -12,9 +13,18 @@ const app = express();
 //body parser
 app.use(express.json());
 
+console.log(process.env.NODE_ENV);
+if(process.env.NODE_ENV === 'development'){
+    app.use(morgan('dev'));
+}
 dotenv.config();
 
 connectDB();
+
+
+if(process.env.NODE_ENV === 'development'){
+    app.use(morgan('dev'));
+}
 
 app.get('/',(req,res)=>{res.send('API is runnig');} )
 
