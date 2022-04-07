@@ -17,7 +17,7 @@ const addOrderItems = asyncHandler(async (req, res)=>{
     if(orderItems && orderItems.length ===0){
         res.status(400);
         throw new Error('No order items');
-        return;
+        
     } else{
         const order= new Order({
             orderItems,
@@ -46,8 +46,25 @@ const getOrderById = asyncHandler(async (req, res)=>{
         throw new Error('Order not found');
     }
  })
-//update order to pain
-//:id/pay
+
+//update order to delivered
+//:id/deliver
+ const updateOrderToDelivered = asyncHandler(async (req, res)=>{
+    const order = await Order.findById(req.params.id);
+
+    if(order){
+        order.isDelivered=true;
+        order.deliveredAt= Date.now();
+        
+        const updateOrder= await order.save();
+        res.json(updateOrder);
+    }
+    else {
+        res.status(404);
+        throw new Error('Order not found');
+    }
+ })
+
  const updateOrderToPay = asyncHandler(async (req, res)=>{
     const order = await Order.findById(req.params.id);
 
@@ -68,6 +85,7 @@ const getOrderById = asyncHandler(async (req, res)=>{
         throw new Error('Order not found');
     }
  })
+
  //get ourder by user
  // orders/myorders
  const getMyOrders = asyncHandler(async (req, res)=>{
@@ -77,6 +95,20 @@ const getOrderById = asyncHandler(async (req, res)=>{
    
 })
  
+//get all orders
+const getOrders = asyncHandler(async (req, res)=>{
+    
+    const orders = await Order.find({}).populate('user','id name');
+    res.json(orders);
+   
+})
 
  
-export  {addOrderItems , getOrderById , updateOrderToPay, getMyOrders}
+export  {
+    addOrderItems , 
+    getOrderById , 
+    updateOrderToPay, 
+    getMyOrders, 
+    getOrders,
+    updateOrderToDelivered
+}

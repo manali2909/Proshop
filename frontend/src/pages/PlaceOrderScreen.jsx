@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { createOrder } from "../actions/orderActions";
 import { useDispatch, useSelector } from "react-redux";
-import FormContainer from "../components/FormContainer";
+
 import {
   Row,
   Card,
@@ -14,6 +14,7 @@ import {
 } from "react-bootstrap";
 import CheckoutSteps from "../components/CheckoutSteps";
 import Message from "../components/Message";
+import { afterPlaceOrder } from "../actions/cartActions";
 
 const PlaceOrderScreen = () => {
   const navigate = useNavigate();
@@ -57,6 +58,7 @@ const PlaceOrderScreen = () => {
         totalPrice: cart.totalPrice,
       })
     );
+    // dispatch(afterPlaceOrder());
   };
   return (
     <>
