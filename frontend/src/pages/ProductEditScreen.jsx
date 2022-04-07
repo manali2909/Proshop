@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import { Form, Row, Col, Button } from "react-bootstrap";
+import { Form, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
@@ -51,7 +51,7 @@ const ProductEditScreen = () => {
         setCountInStock(product.countInStock);
       }
     }
-  }, [dispatch, productId, useParams, product, successUpdate]);
+  }, [dispatch, productId, product, successUpdate, navigate]);
 
   const submitHandler = (e) => {
     e.preventDefault();

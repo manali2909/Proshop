@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from "react";
-import {
-  Link,
-  useNavigate,
-  useSearchParams,
-  useParams,
-} from "react-router-dom";
-import { Form, Row, Col, Button } from "react-bootstrap";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { Form, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
@@ -46,7 +41,7 @@ const UserEditScreen = () => {
         setIsAdmin(user.isAdmin);
       }
     }
-  }, [dispatch, userId, user, successUpdate]);
+  }, [dispatch, userId, user, successUpdate, navigate]);
 
   const submitHandler = (e) => {
     e.preventDefault();

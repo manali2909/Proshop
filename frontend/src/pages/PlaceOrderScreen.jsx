@@ -3,18 +3,9 @@ import { useNavigate, Link } from "react-router-dom";
 import { createOrder } from "../actions/orderActions";
 import { useDispatch, useSelector } from "react-redux";
 
-import {
-  Row,
-  Card,
-  Image,
-  ListGroup,
-  Button,
-  Col,
-  ListGroupItem,
-} from "react-bootstrap";
+import { Row, Card, Image, ListGroup, Button, Col } from "react-bootstrap";
 import CheckoutSteps from "../components/CheckoutSteps";
 import Message from "../components/Message";
-import { afterPlaceOrder } from "../actions/cartActions";
 
 const PlaceOrderScreen = () => {
   const navigate = useNavigate();
