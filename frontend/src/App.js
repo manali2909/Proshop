@@ -26,6 +26,7 @@ function App() {
         <main className="py-3">
           <Container>
             <Routes>
+              <Route path="/search/:keyword" element={<HomeScreen/>}/>
               <Route path="/" element={<HomeScreen/>}/>
               <Route path="/products/:id" element={<ProductScreen/>}/>
               <Route path="/cart/:id" element={<CartScreen/>}/>
