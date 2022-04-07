@@ -3,15 +3,18 @@ import asyncHandler from 'express-async-handler';
 import Product from '../models/productModel.js';
 
 const getProducts = asyncHandler(async (req, res)=>{
-    
+    const pageSize=2;
+    const page= Number(req.query.pageNumber) || 1 ; 
     const keyword = req.query.keyword ?{
         name:{
             $regex:req.query.keyword,
             $options:'i'
         }
     }:{}
-    const products = await Products.find({...keyword})
-    res.json(products);
+
+    const count = await Product.count({...keyword})
+    const products = await Products.find({...keyword}).limit(pageSize).skip(pageSize * (page-1))
+    res.json({products,page,pages:Math.ceil(count/pageSize)});
 })
 
 const getProductById = asyncHandler(async (req, res)=>{
@@ -82,7 +85,7 @@ const updateProduct = asyncHandler(async (req, res)=>{
   })
 
 
-  const createProductReview = asyncHandler(async (req, res)=>{
+const createProductReview = asyncHandler(async (req, res)=>{
     const {
        rating ,
        comment
@@ -118,7 +121,13 @@ const updateProduct = asyncHandler(async (req, res)=>{
         throw new Error('Product not found')
     }
     
-  })
+})
+
+const getTopProducts = asyncHandler(async (req, res)=>{
+    const product = await Product.find({}).sort({rating :-1}).limit(3)
+    res.json(product);
+    
+})
   
 export  {
     getProducts,
@@ -126,5 +135,6 @@ export  {
     deleteProduct,
     createProduct,
     updateProduct,
-    createProductReview
+    createProductReview,
+    getTopProducts
 }
